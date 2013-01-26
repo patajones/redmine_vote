@@ -20,7 +20,7 @@ class VoteController < IssuesController
     @issue.save
     # TODO
     reset_invocation_response
-    redirect_to :controller => 'issues', :action => 'show', :id => @issue
+    redirect_to_referer_or
   end
 
   def reset_invocation_response
