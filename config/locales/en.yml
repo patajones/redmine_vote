@@ -10,3 +10,5 @@ en:
   permission_view_voter : View voter list
   project_module_issue_voting : issue voting
   label_viewvoter: view voter
+  label_votes_vote_succeeded: Vote succeeded.
+  label_votes_vote_failed: Vote failed!!!

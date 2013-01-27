@@ -16,8 +16,12 @@ class VoteController < IssuesController
   def vote(type)
     find_issue
     authorize
-    @issue.vote(type)
-    @issue.save
+    if @issue.vote(type)
+      @issue.save
+      flash[:notice] = l(:label_votes_vote_succeeded)
+    else
+      flash[:error] = l(:label_votes_vote_failed)
+    end
     # TODO
     reset_invocation_response
     redirect_to_referer_or
