@@ -16,8 +16,7 @@ class VoteController < IssuesController
   def vote(type)
     find_issue
     authorize
-    if @issue.vote(type)
-      @issue.save
+    if @issue.vote(type) && @issue.save
       flash[:notice] = l(:label_votes_vote_succeeded)
     else
       flash[:error] = l(:label_votes_vote_failed)
