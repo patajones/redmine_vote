@@ -8,7 +8,9 @@ class IssuesVoteHook < Redmine::Hook::ViewListener
         <a href="#" class="submenu"><%= l(:label_votes) %></a>
         <ul>
           <li><%= context_menu_link l(:button_vote_up), {:controller => 'vote', :action => 'up',   :id => @issue }, :class => 'icon icon-vote-up', :method => 'post' %>
-          <li><%= context_menu_link l(:button_vote_down), {:controller => 'vote', :action => 'down', :id => @issue  }, :class => 'icon icon-vote-down', :method => 'post' %>
+          <% if authorize_for('vote', 'down')%>
+            <li><%= context_menu_link l(:button_vote_down), {:controller => 'vote', :action => 'down', :id => @issue  }, :class => 'icon icon-vote-down', :method => 'post' %>
+          <% end %>
         </ul>
       </li>
     <% end %>
@@ -30,7 +32,9 @@ END
     <% @project = @issue.project %>
 	  <% if (authorize_for('issues', 'vote') && !@issue.voted_by_user?) || authorize_for('issues', 'multiple_vote') %>
       <%= link_to("", { :controller => 'vote', :action => 'up',   :id => @issue }, :class => 'icon icon-vote-up'  , :method => 'post') %>
-      <%= link_to("", { :controller => 'vote', :action => 'down', :id => @issue }, :class => 'icon icon-vote-down', :method => 'post') %>
+      <% if authorize_for('vote', 'down')%>
+        <%= link_to("", { :controller => 'vote', :action => 'down', :id => @issue }, :class => 'icon icon-vote-down', :method => 'post') %>
+      <% end %>
     <% end %>
 
     </td></tr>
