@@ -10,9 +10,16 @@ module QueryVotePatch
     columns << QueryColumn.new(:votes_value, :sortable => "#{Issue.table_name}.votes_value")  unless columns.detect{ |c| c.name == :votes_value }
     columns
   end
+  
+  def initialize_available_filters_with_votes_filter
+    initialize_available_filters_without_votes_filter
+    add_available_filter "votes_value",
+      :type => :integer, :values => IssueStatus.sorted.all.collect{|s| [s.name, s.id.to_s] }
+  end
 
   def self.included(base)
     base.send :alias_method_chain, :available_columns, :votes_value
+    base.send :alias_method_chain, :initialize_available_filters, :votes_filter
   end
 end
 
