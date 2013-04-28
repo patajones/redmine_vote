@@ -27,6 +27,7 @@ END
 	  <% if authorize_for('issues', 'view_votes') %>
     <% vv = @issue.votes_value %>
     <%= content_tag('span', vv, :class => (vv > 0? 'votes-positive': ( vv < 0 ? 'votes-negative' : ''))) %>
+    <%= content_tag('span', " (" + @issue.votes_percent.round(1).to_s + "%)") %>
 	  <% end %>
 
     <% @project = @issue.project %>

@@ -18,15 +18,29 @@ module QueryVotePatch
     columns
   end
   
+  def available_columns_with_votes_percent
+    columns = available_columns_without_votes_percent
+    columns << QueryColumn.new(:votes_percent, :sortable => "#{Issue.table_name}.votes_percent")  if !columns.detect{ |c| c.name == :votes_percent } && can_view_votes?(:project => project) 
+    columns
+  end
+  
   def initialize_available_filters_with_votes_filter
     initialize_available_filters_without_votes_filter
     add_available_filter "votes_value",
       :type => :integer, :values => IssueStatus.sorted.all.collect{|s| [s.name, s.id.to_s] }   if !columns.detect{ |c| c.name == :votes_value } && can_view_votes?(:project => project)
   end
+  
+  def initialize_available_filters_with_votes_percent_filter
+    initialize_available_filters_without_votes_percent_filter
+    add_available_filter "votes_percent",
+      :type => :integer, :values => IssueStatus.sorted.all.collect{|s| [s.name, s.id.to_s] }   if !columns.detect{ |c| c.name == :votes_percent } && can_view_votes?(:project => project)
+  end
 
   def self.included(base)
     base.send :alias_method_chain, :available_columns, :votes_value
     base.send :alias_method_chain, :initialize_available_filters, :votes_filter
+    base.send :alias_method_chain, :available_columns, :votes_percent
+    base.send :alias_method_chain, :initialize_available_filters, :votes_percent_filter
   end
 end
 

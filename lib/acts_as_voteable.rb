@@ -33,6 +33,7 @@ module Juixe
           return false if (voted_by_user?(user) && !user.allowed_to?(:multiple_vote_issue, self.project))
           Vote.create( :voteable => self, :vote => vote == :up, :user => user ) 
           self.votes_value += (vote == :up ? 1:-1)
+          self.votes_percent = votes_percent
           return true
         end
         def votes_for
@@ -45,6 +46,12 @@ module Juixe
         
         def votes_count
           self.votes.size
+        end
+        
+        def votes_percent
+          return 0.to_f if (votes_for == 0) && (votes_against == 0)
+          
+          votes_for.to_f / (votes_for.to_f + votes_against.to_f) * 100
         end
         
         def users_who_voted

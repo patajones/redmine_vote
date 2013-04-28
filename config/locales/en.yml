@@ -4,6 +4,7 @@ en:
   button_vote_down: down
   label_votes: Votes
   field_votes_value: Votes
+  field_votes_percent: Up Vote Percent
   permission_vote_issue : Vote on issue
   permission_multiple_vote_issue : Vote on issue multiple times
   permission_view_votes : View votes
