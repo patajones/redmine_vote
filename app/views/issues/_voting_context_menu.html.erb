@@ -1,0 +1,13 @@
+<% unless @issue.nil? %>
+  <% if (authorize_for('vote', 'up') && !@issue.voted_by_user?) || authorize_for('vote', 'multiple_vote') %>
+    <li class="folder">
+      <a href="#" class="submenu"><%= l(:label_votes) %></a>
+      <ul>
+        <li><%= context_menu_link l(:button_vote_up), {:controller => 'vote', :action => 'up',   :id => @issue }, :class => 'icon icon-vote-up', :method => 'post' %>
+        <% if authorize_for('vote', 'down')%>
+          <li><%= context_menu_link l(:button_vote_down), {:controller => 'vote', :action => 'down', :id => @issue  }, :class => 'icon icon-vote-down', :method => 'post' %>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+<% end %>

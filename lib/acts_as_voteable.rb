@@ -28,24 +28,25 @@ module Juixe
       
       # This module contains instance methods
       module InstanceMethods
-        def vote( vote=:up, user=User.current )
+        def vote( vote=:up, count=1, user=User.current )
+          return false if (count == 0)
           return false if (vote != :up && !user.allowed_to?(:downvote_issue, self.project))
-          return false if (voted_by_user?(user) && !user.allowed_to?(:multiple_vote_issue, self.project))
-          Vote.create( :voteable => self, :vote => vote == :up, :user => user ) 
-          self.votes_value += (vote == :up ? 1:-1)
+          return false if ((count > 1 || voted_by_user?(user)) && !user.allowed_to?(:multiple_vote_issue, self.project))
+          Vote.create( :voteable => self, :vote => vote == :up, :vote_count => count, :user => user ) 
+          self.votes_value += (vote == :up ? count:-count)
           self.votes_percent = votes_percent
           return true
         end
         def votes_for
-          self.votes.select{|v| v.vote}.size
+          self.votes.select{|v| v.vote}.sum(&:vote_count)
         end
         
         def votes_against
-          self.votes.select{|v| !v.vote}.size
+          self.votes.select{|v| !v.vote}.sum(&:vote_count)
         end
         
         def votes_count
-          self.votes.size
+          self.votes.sum(&:vote_count)
         end
         
         def votes_percent

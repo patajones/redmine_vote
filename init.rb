@@ -9,10 +9,10 @@ Redmine::Plugin.register :redmine_vote do
   description 'Issue Vote Plugin'
   version '0.0.3'
   project_module :issue_voting do
-    permission :vote_issue, {:issues => :vote}, :require => :loggedin
+    permission :vote_issue, {:vote => :up}, :require => :loggedin
     permission :downvote_issue, {:vote => :down}, :require => :loggedin
-    permission :multiple_vote_issue, {:issues => :multiple_vote}, :require => :loggedin
-    permission :view_votes, {:issues => :view_votes}, :require => :loggedin
+    permission :multiple_vote_issue, {:vote => :multiple_vote}, :require => :loggedin
+    permission :view_votes, {:vote => :view_votes}, :require => :loggedin
   end
 end
 

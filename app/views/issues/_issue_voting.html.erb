@@ -1,0 +1,11 @@
+<tr><td><b>
+
+<% if authorize_for('vote', 'view_votes') || (authorize_for('vote', 'up') && !@issue.voted_by_user?) || authorize_for('vote', 'multiple_vote') %>
+  <%= l :label_votes %>:</b></td><td>
+<% end %>
+
+<div id='voting_controls'>
+  <%= render :partial => "issues/voting_controls", :locals => { :issue => @issue } %>
+</div>
+
+</td></tr>

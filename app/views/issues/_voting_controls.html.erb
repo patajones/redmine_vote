@@ -1,0 +1,20 @@
+<% if authorize_for('vote', 'view_votes') %>
+  <% vv = @issue.votes_value %>
+  <%= content_tag('span', vv, :class => (vv > 0? 'votes-positive': ( vv < 0 ? 'votes-negative' : ''))) %>
+  <%= content_tag('span', " (" + @issue.votes_percent.round(1).to_s + "%)") %>
+<% end %>
+
+<% @project = @issue.project %>
+<% if (authorize_for('vote', 'up') && !@issue.voted_by_user?) || authorize_for('vote', 'multiple_vote') %>
+  <%= javascript_include_tag('votes', :plugin => 'redmine_vote') %>
+  <%= hidden_field_tag 'vote_issue_id', @issue.id %>
+  <% if authorize_for('vote', 'multiple_vote') %>
+    <br><%= number_field_tag 'vote_count',  '1' %>
+  <% else %>
+    <%= hidden_field_tag 'vote_count', '1' %>
+  <% end %>
+  <%= link_to("", { :controller => 'vote', :action => 'up', :id => @issue }, :class => 'icon icon-vote-up', :method => 'post', :id => 'vote_up') %>
+  <% if authorize_for('vote', 'down')%>
+    <%= link_to("", { :controller => 'vote', :action => 'down', :id => @issue }, :class => 'icon icon-vote-down', :method => 'post', :id => 'vote_down') %>
+  <% end %>
+<% end %>
