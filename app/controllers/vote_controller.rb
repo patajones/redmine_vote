@@ -2,7 +2,7 @@ require 'redmine'
 
 class VoteController < IssuesController
 
-  skip_before_filter :authorize, :only => [:up,:down]
+  skip_before_filter :authorize, :only => [:up,:down, :clear]
 
   def up
     vote(:up, params[:count])
@@ -10,6 +10,22 @@ class VoteController < IssuesController
 
   def down
     vote(:down, params[:count])
+  end
+  
+  def clear
+    find_issue
+    
+    if @issue.clear_votes() && @issue.save
+      flash[:notice] = l(:label_votes_clear_succeeded)
+    else
+      flash[:error] = l(:label_votes_clear_failed)
+    end
+    
+    reset_invocation_response
+    respond_to do |format|
+      format.html { redirect_to_referer_or }
+      format.js { render :partial => 'issues/voting_controls', :locals => { :issue => @issue } }
+    end
   end
 
   private

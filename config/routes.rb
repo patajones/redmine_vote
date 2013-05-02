@@ -4,4 +4,5 @@
 RedmineApp::Application.routes.draw do
   post '/vote/up',   :to => 'vote#up'
   post '/vote/down', :to => 'vote#down'
+  delete '/vote/clear', :to => 'vote#clear'
 end

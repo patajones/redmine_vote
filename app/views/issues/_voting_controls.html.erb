@@ -17,4 +17,7 @@
   <% if authorize_for('vote', 'down')%>
     <%= link_to("", { :controller => 'vote', :action => 'down', :id => @issue }, :class => 'icon icon-vote-down', :method => 'post', :id => 'vote_down') %>
   <% end %>
+  <% if authorize_for('vote', 'clear') && (@issue.votes_count != 0) %>
+    <%= link_to("", { :controller => 'vote', :action => 'clear', :id => @issue }, :class => 'icon icon-del', :method => 'delete', :id => 'vote_delete') %>
+  <% end %>
 <% end %>

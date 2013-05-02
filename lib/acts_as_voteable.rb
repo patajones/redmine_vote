@@ -38,6 +38,12 @@ module Juixe
           self.votes_percent = votes_percent
           return true
         end
+        def clear_votes
+          Vote.destroy_all(:voteable_id => self)
+          self.votes_value = 0;
+          self.votes_percent = 0;
+          return true;
+        end
         def votes_for
           self.votes.select{|v| v.vote}.sum(&:vote_count)
         end

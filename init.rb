@@ -13,6 +13,7 @@ Redmine::Plugin.register :redmine_vote do
     permission :downvote_issue, {:vote => :down}, :require => :loggedin
     permission :multiple_vote_issue, {:vote => :multiple_vote}, :require => :loggedin
     permission :view_votes, {:vote => :view_votes}, :require => :loggedin
+    permission :clear_votes, {:vote => :clear}, :require => :loggedin
   end
 end
 

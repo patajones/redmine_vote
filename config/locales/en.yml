@@ -13,3 +13,5 @@ en:
   label_viewvoter: view voter
   label_votes_vote_succeeded: Vote succeeded.
   label_votes_vote_failed: Vote failed!!!
+  label_votes_clear_succeeded: Votes cleared.
+  label_votes_clear_failed: Clearing votes failed!!!
