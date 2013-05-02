@@ -32,7 +32,8 @@ module Juixe
           return false if (count == 0)
           return false if (vote != :up && !user.allowed_to?(:downvote_issue, self.project))
           return false if ((count > 1 || voted_by_user?(user)) && !user.allowed_to?(:multiple_vote_issue, self.project))
-          Vote.create( :voteable => self, :vote => vote == :up, :vote_count => count, :user => user ) 
+          Vote.create( :voteable => self, :vote => vote == :up, :vote_count => count, :user => user )
+          self.reload 
           self.votes_value += (vote == :up ? count:-count)
           self.votes_percent = votes_percent
           return true
