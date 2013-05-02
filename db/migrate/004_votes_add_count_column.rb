@@ -1,6 +1,6 @@
 class VotesAddCountColumn < ActiveRecord::Migration
   def self.up
-    add_column :votes, :vote_count, :integer, :default => 0, :null => false
+    add_column :votes, :vote_count, :integer, :default => 1, :null => false
   end
 
   def self.down

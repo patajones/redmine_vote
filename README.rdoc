@@ -4,3 +4,17 @@ This plugin is the result of several other people's work. We've added the abilit
 votes so our support staff can track requests.
 
 This plugin is compatible with Redmine 2.3 only for, previous version, use 2.2_branch.
+
+== Installation instructions
+
+Copy this plugin to: plugins/redmine_vote
+
+Migrate the database
+
+    RAILS_ENV=production rake redmine:plugins:migrate
+
+If a previous version of the vote plugin has been used, run:
+
+    RAILS_ENV=production rake redmine:redmine_vote:initialize_votes
+
+Restart redmine.
