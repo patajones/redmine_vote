@@ -21,3 +21,8 @@
     <%= link_to("", { :controller => 'vote', :action => 'clear', :id => @issue }, :class => 'icon icon-del', :method => 'delete', :id => 'vote_delete') %>
   <% end %>
 <% end %>
+
+<div>
+  <%= content_tag('div', l(:label_votes_vote_failed), :hidden => success.nil? || success, :class => 'vote-failed', :id => 'vote-failed') %>
+</div>
+

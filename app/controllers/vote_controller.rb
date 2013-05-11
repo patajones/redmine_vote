@@ -35,15 +35,22 @@ class VoteController < IssuesController
     count = Integer(count) unless count.nil?
     count = 1 if count.nil?
     if @issue.vote(type, count) && @issue.save
-      flash[:notice] = l(:label_votes_vote_succeeded)
+      success = true
     else
-      flash[:error] = l(:label_votes_vote_failed)
+      success = false
     end
     # TODO
     reset_invocation_response
     respond_to do |format|
-      format.html { redirect_to_referer_or }
-      format.js { render :partial => 'issues/voting_controls', :locals => { :issue => @issue } }
+      format.html { 
+        if success
+          flash[:notice] = l(:label_votes_vote_succeeded)
+        else
+          flash[:error] = l(:label_votes_vote_failed)
+        end
+        redirect_to_referer_or 
+      }
+      format.js { render :partial => 'issues/voting_controls', :locals => { :issue => @issue, :success => success } }
     end
     
   end

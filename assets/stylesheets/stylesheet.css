@@ -2,3 +2,4 @@
 .icon-vote-down { background-image: url(../images/arrow_270.png); text-decoration: none !important; }
 span.votes-positive { color: green; font-weight: bold }
 span.votes-negative { color: red; font-weight: bold }
+div.vote-failed { color: red; font-weight: bold }

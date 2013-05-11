@@ -4,8 +4,10 @@ function vote(direction) {
 		type: 'POST',
 		context: document.body
 		}).success(function(transport) {
-			$('#voting_controls').html(transport)
-	});
+			$('#voting_controls').html(transport);
+		}).error(function() {
+			$('#vote-failed').show();
+		});
 }
 
 $(document).ready(function() {
