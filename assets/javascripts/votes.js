@@ -1,6 +1,6 @@
 function vote(direction) {
 	$.ajax({
-		url: "/vote/" + direction + ".js?id=" + $('#vote_issue_id').val() + "&count=" + $('#vote_count').val(),
+		url: "../vote/" + direction + ".js?id=" + $('#vote_issue_id').val() + "&count=" + $('#vote_count').val(),
 		type: 'POST',
 		context: document.body
 		}).success(function(transport) {
