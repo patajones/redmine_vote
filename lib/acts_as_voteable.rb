@@ -30,8 +30,6 @@ module Juixe
       module InstanceMethods
         def vote( vote=:up, count=1, user=User.current )
           return false if (count == 0)
-          return false if (vote != :up && !user.allowed_to?(:downvote_issue, self.project))
-          return false if ((count > 1 || voted_by_user?(user)) && !user.allowed_to?(:multiple_vote_issue, self.project))
           Vote.create( :voteable => self, :vote => vote == :up, :vote_count => count, :user => user )
           self.reload 
           self.votes_value += (vote == :up ? count:-count)
@@ -50,6 +48,14 @@ module Juixe
         
         def votes_against
           self.votes.select{|v| !v.vote}.sum(&:vote_count)
+        end
+        
+        def votes_for_by_user(user = User.current)
+          self.votes.where(:user_id => user.id).select{|v| v.vote}.sum(&:vote_count)
+        end
+        
+        def votes_against_by_user(user = User.current)
+          self.votes.where(:user_id => user.id).select{|v| !v.vote}.sum(&:vote_count)
         end
         
         def votes_count
@@ -78,6 +84,10 @@ module Juixe
             }
           end
           rtn
+        end
+        
+        def vote_count_by_user(user=User.current)
+          self.votes_for_by_user(user) - self.votes_against_by_user(user)
         end
       end
     end

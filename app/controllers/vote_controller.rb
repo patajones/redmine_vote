@@ -1,9 +1,11 @@
 require 'redmine'
 
 class VoteController < IssuesController
+  include IssuesHelper
 
-  skip_before_filter :authorize, :only => [:up,:down, :clear]
-
+  before_filter :find_issue
+  before_filter :authorize, :except => [:up, :down]
+  
   def up
     vote(:up, params[:count])
   end
@@ -13,8 +15,6 @@ class VoteController < IssuesController
   end
   
   def clear
-    find_issue
-    
     if @issue.clear_votes() && @issue.save
       flash[:notice] = l(:label_votes_clear_succeeded)
     else
@@ -30,10 +30,12 @@ class VoteController < IssuesController
 
   private
   def vote(type, count)
-    find_issue
-    authorize
     count = Integer(count) unless count.nil?
     count = 1 if count.nil?
+    if !allowed_to_vote?(@issue, type, count)
+      return deny_access
+    end
+    
     if @issue.vote(type, count) && @issue.save
       success = true
     else
@@ -48,7 +50,7 @@ class VoteController < IssuesController
         else
           flash[:error] = l(:label_votes_vote_failed)
         end
-        redirect_to_referer_or 
+        redirect_to_referer_or(:controller => :issues, :action => :show, :id => @issue.id)
       }
       format.js { render :partial => 'issues/voting_controls', :locals => { :issue => @issue, :success => success } }
     end
