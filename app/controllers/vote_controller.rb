@@ -15,7 +15,7 @@ class VoteController < IssuesController
   end
   
   def clear
-    if @issue.clear_votes() && @issue.save
+    if @issue.clear_votes()
       flash[:notice] = l(:label_votes_clear_succeeded)
     else
       flash[:error] = l(:label_votes_clear_failed)
@@ -36,9 +36,10 @@ class VoteController < IssuesController
       return deny_access
     end
     
-    if @issue.vote(type, count) && @issue.save
+    if @issue.vote(type, count)
       success = true
     else
+      print "\n\n#{@issue.errors.inspect}\n\n"
       success = false
     end
     # TODO

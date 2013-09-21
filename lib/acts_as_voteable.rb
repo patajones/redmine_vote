@@ -31,15 +31,15 @@ module Juixe
         def vote( vote=:up, count=1, user=User.current )
           return false if (count == 0)
           Vote.create( :voteable => self, :vote => vote == :up, :vote_count => count, :user => user )
-          self.reload 
-          self.votes_value += (vote == :up ? count:-count)
-          self.votes_percent = votes_percent
+          self.reload
+          self.update_attribute :votes_value, self.votes_value + (vote == :up ? count:-count)  
+          self.update_attribute :votes_percent, votes_percent
           return true
         end
         def clear_votes
           Vote.destroy_all(:voteable_id => self)
-          self.votes_value = 0;
-          self.votes_percent = 0;
+          self.update_attribute :votes_value, 0
+          self.update_attribute :votes_percent, 0
           return true;
         end
         def votes_for
