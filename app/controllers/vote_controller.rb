@@ -15,16 +15,19 @@ class VoteController < IssuesController
   end
   
   def clear
-    if @issue.clear_votes()
-      flash[:notice] = l(:label_votes_clear_succeeded)
-    else
-      flash[:error] = l(:label_votes_clear_failed)
-    end
-    
+    success =  @issue.clear_votes()
+
     reset_invocation_response
     respond_to do |format|
-      format.html { redirect_to_referer_or }
-      format.js { render :partial => 'issues/voting_controls', :locals => { :issue => @issue } }
+      format.html {  
+        if success
+          flash[:notice] = l(:label_votes_clear_succeeded)
+        else
+          flash[:error] = l(:label_votes_clear_failed)
+        end
+        redirect_to_referer_or
+      }
+      format.js { render :partial => 'issues/voting_controls', :locals => { :issue => @issue, :success => success } }
     end
   end
 
@@ -36,13 +39,7 @@ class VoteController < IssuesController
       return deny_access
     end
     
-    if @issue.vote(type, count)
-      success = true
-    else
-      print "\n\n#{@issue.errors.inspect}\n\n"
-      success = false
-    end
-    # TODO
+    success =  @issue.vote(type, count)
     reset_invocation_response
     respond_to do |format|
       format.html { 
