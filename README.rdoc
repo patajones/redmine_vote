@@ -5,6 +5,9 @@ votes so our support staff can track requests.
 
 This plugin is compatible with Redmine 2.3 only for, previous version, use 2.2_branch.
 
+= Fork note
+Instaled on redmine 3
+
 == Installation instructions
 
 Copy this plugin to: plugins/redmine_vote
