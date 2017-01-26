@@ -59,7 +59,7 @@ module Juixe
         end
         
         def votes_count
-          self.votes.sum(&:vote_count)
+          self.votes.sum(:vote_count)
         end
         
         def votes_percent
