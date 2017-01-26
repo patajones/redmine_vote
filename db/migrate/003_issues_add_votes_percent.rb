@@ -1,6 +1,6 @@
 class IssuesAddVotesPercent < ActiveRecord::Migration
   def self.up
-    add_column :issues, :votes_percent, :double, :default => 0, :null => false
+    add_column :issues, :votes_percent, :float, :default => 0, :null => false
   end
 
   def self.down
